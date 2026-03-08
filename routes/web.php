@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CommunityEventController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,6 +23,21 @@ Route::get('/about', function () {
     return view('about');
 });
 
-Route::get('/dashboard', [DashboardController::class, 'index']);
-
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
 // Create additional Routes below
+
+use App\Http\Controllers\AuthController;
+
+Route::get('/login', [AuthController::class, 'create'])->name('login');
+
+
+Route::post('/login', [AuthController::class, 'store']);
+
+
+Route::get('/community-events/add', [CommunityEventController::class, 'create'])->middleware('auth');
+
+
+Route::post('/community-events', [CommunityEventController::class, 'store'])->middleware('auth');
+
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
